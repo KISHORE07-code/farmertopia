@@ -178,8 +178,8 @@ export default function CattlePageClient({ cattle: initialCattle }: CattlePageCl
                             <div className="p-5 flex-1 flex flex-col">
                                 <div className="flex justify-between items-start mb-3">
                                     <div>
-                                        <h3 className="font-bold text-gray-900 dark:text-white text-lg">{item.name}</h3>
-                                        <p className="text-xs text-primary font-medium">{item.breed} · {item.category}</p>
+                                        <h3 className="font-bold text-gray-900 dark:text-white text-lg">{item.breed}</h3>
+                                        <p className="text-xs text-primary font-medium">{item.category}</p>
                                     </div>
                                     <p className="font-bold text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-lg text-sm">
                                         ₹{(item.price / 1000).toFixed(1)}k
