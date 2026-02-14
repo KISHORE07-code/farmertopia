@@ -192,6 +192,7 @@ export default function FieldsPageClient({ fields }: FieldsPageClientProps) {
                     }}
                     isDrawing={isDrawing}
                     onDrawEnd={handleDrawEnd}
+                    onDelete={(id) => handleDeleteField({ stopPropagation: () => { } } as React.MouseEvent, id)}
                 />
 
                 {/* Floating Controls */}

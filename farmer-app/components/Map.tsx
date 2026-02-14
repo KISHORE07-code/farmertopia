@@ -24,9 +24,10 @@ interface MapComponentProps {
   onFieldSelect?: (fieldId: string) => void;
   isDrawing?: boolean;
   onDrawEnd?: (coordinates: number[][]) => void;
+  onDelete?: (fieldId: string) => void;
 }
 
-export default function MapComponent({ fields = [], selectedFieldId, onFieldSelect, isDrawing = false, onDrawEnd }: MapComponentProps) {
+export default function MapComponent({ fields = [], selectedFieldId, onFieldSelect, isDrawing = false, onDrawEnd, onDelete }: MapComponentProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<Map | null>(null);
@@ -110,7 +111,7 @@ export default function MapComponent({ fields = [], selectedFieldId, onFieldSele
           },
         },
         positioning: 'bottom-center',
-        stopEvent: false,
+        stopEvent: true,
         offset: [0, -10],
       });
 
@@ -152,10 +153,26 @@ export default function MapComponent({ fields = [], selectedFieldId, onFieldSele
           const content = popupRef.current?.querySelector('#popup-content');
           if (content) {
             content.innerHTML = `
-              <div class="text-sm font-semibold">${name}</div>
-              <div class="text-xs text-gray-600">${crop} · ${acres} ac</div>
+              <div class="flex justify-between items-start gap-2">
+                <div>
+                  <div class="text-sm font-semibold">${name}</div>
+                  <div class="text-xs text-gray-600">${crop} · ${acres} ac</div>
+                </div>
+                <button id="popup-delete-btn" class="text-gray-400 hover:text-red-500 transition-colors p-1 -mt-1 -mr-1" title="Delete Field">
+                  <span class="material-icons text-sm">delete</span>
+                </button>
+              </div>
               <div class="text-xs font-medium mt-1 ${status === 'Healthy' ? 'text-green-600' : 'text-amber-600'}">${status}</div>
             `;
+
+            const deleteBtn = content.querySelector('#popup-delete-btn') as HTMLButtonElement;
+            if (deleteBtn) {
+              deleteBtn.onclick = (e) => {
+                e.stopPropagation();
+                const id = feature.get('id');
+                if (onDelete) onDelete(id);
+              };
+            }
           }
 
           overlay.setPosition(coord);
@@ -227,10 +244,25 @@ export default function MapComponent({ fields = [], selectedFieldId, onFieldSele
           const content = popupRef.current?.querySelector('#popup-content');
           if (content && selectedField) {
             content.innerHTML = `
-              <div class="text-sm font-semibold">${selectedField.name}</div>
-              <div class="text-xs text-gray-600">${selectedField.crop} · ${selectedField.acres} ac</div>
+              <div class="flex justify-between items-start gap-2">
+                <div>
+                  <div class="text-sm font-semibold">${selectedField.name}</div>
+                  <div class="text-xs text-gray-600">${selectedField.crop} · ${selectedField.acres} ac</div>
+                </div>
+                <button id="popup-delete-btn" class="text-gray-400 hover:text-red-500 transition-colors p-1 -mt-1 -mr-1" title="Delete Field">
+                  <span class="material-icons text-sm">delete</span>
+                </button>
+              </div>
               <div class="text-xs font-medium mt-1 ${selectedField.status === 'Healthy' ? 'text-green-600' : 'text-amber-600'}">${selectedField.status}</div>
             `;
+
+            const deleteBtn = content.querySelector('#popup-delete-btn') as HTMLButtonElement;
+            if (deleteBtn) {
+              deleteBtn.onclick = (e) => {
+                e.stopPropagation();
+                if (onDelete) onDelete(selectedField.id);
+              };
+            }
           }
         }
       }
@@ -297,7 +329,7 @@ export default function MapComponent({ fields = [], selectedFieldId, onFieldSele
       <div ref={mapRef} className="w-full h-full" style={{ backgroundColor: '#e5e7eb', cursor: isDrawing ? 'crosshair' : 'default' }} />
 
       {/* Popup Overlay */}
-      <div ref={popupRef} className="absolute bg-white p-3 rounded-lg shadow-lg border border-gray-100 transform -translate-x-1/2 min-w-[140px] pointer-events-none after:content-[''] after:absolute after:top-full after:left-1/2 after:-ml-2 after:border-8 after:border-transparent after:border-t-white">
+      <div ref={popupRef} className="absolute bg-white p-3 rounded-lg shadow-lg border border-gray-100 transform -translate-x-1/2 min-w-[140px] after:content-[''] after:absolute after:top-full after:left-1/2 after:-ml-2 after:border-8 after:border-transparent after:border-t-white">
         <div id="popup-content"></div>
       </div>
 
