@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Farmer Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec37",
+                        "primary-dark": "#0fae29",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102213",
+                        "earth-dark": "#1b3320", // Deep green for text/contrast
+                        "earth-mid": "#4a634e", // Muted green for secondary text
+                        "ochre": "#d9a404", // Warm ochre for warnings
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(19, 236, 55, 0.15)',
+                        'card': '0 2px 10px rgba(0, 0, 0, 0.03)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for clean horizontal scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-earth-dark dark:text-gray-100 min-h-screen flex justify-center">
+<!-- Mobile Container -->
+<div class="w-full max-w-md bg-background-light dark:bg-background-dark min-h-screen flex flex-col relative overflow-hidden shadow-2xl">
+<!-- Status Bar Area (Visual Placeholder) -->
+<div class="h-12 w-full flex items-center justify-between px-6 pt-2">
+<span class="text-sm font-semibold">9:41</span>
+<div class="flex items-center gap-1.5">
+<span class="material-icons text-[18px]">signal_cellular_alt</span>
+<span class="material-icons text-[18px]">wifi</span>
+<span class="material-icons text-[18px]">battery_full</span>
+</div>
+</div>
+<!-- Header -->
+<header class="px-6 py-4 flex items-center justify-between">
+<div>
+<p class="text-earth-mid dark:text-gray-400 text-sm font-medium">Good Morning,</p>
+<h1 class="text-2xl font-bold text-earth-dark dark:text-white">Farmer John</h1>
+</div>
+<div class="relative">
+<button class="p-2 rounded-full bg-white dark:bg-earth-dark shadow-sm border border-gray-100 dark:border-gray-700 relative">
+<span class="material-icons text-earth-dark dark:text-primary">notifications</span>
+<span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-earth-dark"></span>
+</button>
+</div>
+</header>
+<!-- Main Content Scroll Area -->
+<main class="flex-1 overflow-y-auto px-6 pb-24 no-scrollbar space-y-6">
+<!-- Summary & Weather Grid -->
+<div class="grid grid-cols-1 gap-4">
+<!-- Yield Summary Card -->
+<div class="bg-white dark:bg-earth-dark p-5 rounded-2xl shadow-card border border-gray-100 dark:border-gray-700 relative overflow-hidden group">
+<!-- Background decoration -->
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="text-earth-mid dark:text-gray-400 text-sm font-medium">Total Est. Yield</h3>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="text-3xl font-bold text-earth-dark dark:text-white">1,240</span>
+<span class="text-sm font-medium text-earth-mid dark:text-gray-400">Tons</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="flex items-center text-xs font-bold text-earth-dark bg-primary px-2 py-1 rounded-full">
+<span class="material-icons text-[14px] mr-0.5">trending_up</span>
+                                +5%
+                            </span>
+<span class="text-[10px] text-earth-mid dark:text-gray-400 mt-1">vs Last Year</span>
+</div>
+</div>
+</div>
+<!-- Weather Widget -->
+<div class="bg-gradient-to-br from-earth-dark to-[#0a180d] p-5 rounded-2xl shadow-card text-white relative overflow-hidden">
+<!-- Weather Alert Pill -->
+<div class="absolute top-4 right-4 bg-ochre/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm animate-pulse">
+<span class="material-icons text-[14px]">warning</span>
+<span class="text-xs font-bold text-white">High Wind</span>
+</div>
+<div class="flex items-center gap-4 mt-2">
+<span class="material-icons text-5xl text-primary">partly_cloudy_day</span>
+<div>
+<div class="text-3xl font-bold">72°F</div>
+<div class="text-sm text-gray-300">Partly Cloudy</div>
+<div class="text-xs text-primary/80 mt-1 flex items-center gap-1">
+<span class="material-icons text-[12px]">water_drop</span> 12% Humidity
+                            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div>
+<h2 class="text-lg font-bold text-earth-dark dark:text-white mb-3 flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    Quick Actions
+                </h2>
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-primary hover:bg-primary-dark transition-colors p-4 rounded-xl shadow-soft flex flex-col items-center justify-center text-center group active:scale-95 duration-100">
+<div class="w-12 h-12 bg-black/10 rounded-full flex items-center justify-center mb-3 group-hover:bg-black/20 transition-colors">
+<span class="material-icons text-earth-dark text-2xl">agriculture</span>
+</div>
+<span class="font-bold text-earth-dark">Log Harvest</span>
+</button>
+<button class="bg-white dark:bg-earth-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors p-4 rounded-xl shadow-card border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center text-center group active:scale-95 duration-100">
+<div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-3">
+<span class="material-icons text-primary-dark dark:text-primary text-2xl">add_task</span>
+</div>
+<span class="font-bold text-earth-dark dark:text-white">New Task</span>
+</button>
+</div>
+</div>
+<!-- Active Fields List -->
+<div>
+<div class="flex justify-between items-end mb-3">
+<h2 class="text-lg font-bold text-earth-dark dark:text-white flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                        Active Fields
+                    </h2>
+<a class="text-sm font-semibold text-primary hover:text-primary-dark" href="#">View All</a>
+</div>
+<div class="space-y-3">
+<!-- Field Card 1 -->
+<div class="bg-white dark:bg-earth-dark p-4 rounded-xl shadow-card border border-gray-100 dark:border-gray-700 flex gap-4">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200 relative">
+<img alt="Soybean Field" class="w-full h-full object-cover" data-alt="Green soybean field rows in sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBqJfznq1ePC9Zc4qWegNo2g2muOR8sv0xYcGL6WNftQIY7OUcenCNTjjtuoan6R_C_leWbxIizcsLeTDozCUqikx4VzWWhDOjGk8Gne8K154HIV6HpuZ0r4iC06X3WajovJ_G4CGZn_DPwHj75jXnN6qWWsMQ-OsyDIG-0he9ESq-3e5lHCyUa02pxizcYOy-KwOA2CjjOygzo5ocfPFU7ZV0JZMLjI0wOS5VVTxvjjmcebw9TsIF02ihGxuvxNeZTfbrYGP7pj1U"/>
+<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] px-1 py-0.5 text-center backdrop-blur-sm">
+                                Field A
+                            </div>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-earth-dark dark:text-white">Soybeans</h3>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs px-2 py-0.5 rounded font-medium">Healthy</span>
+</div>
+<p class="text-xs text-earth-mid dark:text-gray-400 mb-3">Vegetative Stage</p>
+<!-- Progress Bar -->
+<div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2.5 mb-1">
+<div class="bg-primary h-2.5 rounded-full" style="width: 45%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-earth-mid dark:text-gray-400 font-medium">
+<span>Maturity</span>
+<span>45%</span>
+</div>
+</div>
+</div>
+<!-- Field Card 2 -->
+<div class="bg-white dark:bg-earth-dark p-4 rounded-xl shadow-card border border-gray-100 dark:border-gray-700 flex gap-4">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200 relative">
+<img alt="Wheat Field" class="w-full h-full object-cover" data-alt="Golden wheat field ready for harvest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA70x2kRpfMxM1IRIshuDMJYbwAukd2q3miFIzSC411_F-3ff8fvaRMbopKeZy2qNljUSwIiwxbOCuTrD2cPb0g26SEv0CYPNkjrH2SZOfP9LSekGyFSzbv5yMIa5d_1cnR8t9JLKIw5rtcaRvbc7uMJ28UCER8nGlQbApVr9PxP3BEj1VIlINs03MZkvsUNH7QqM7Alg7pFC2XvCt93XpcpTToCwkSgIMnQInLL8eJP1hMYlWo-61Ai_NdSWcx2tzYv3MUxn1wpacz"/>
+<div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] px-1 py-0.5 text-center backdrop-blur-sm">
+                                Field B
+                            </div>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-bold text-earth-dark dark:text-white">Winter Wheat</h3>
+<span class="bg-ochre/20 text-ochre text-xs px-2 py-0.5 rounded font-medium">Dry</span>
+</div>
+<p class="text-xs text-earth-mid dark:text-gray-400 mb-3">Harvest Ready</p>
+<!-- Progress Bar -->
+<div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2.5 mb-1">
+<div class="bg-primary h-2.5 rounded-full relative" style="width: 98%">
+<span class="absolute -right-1 -top-1 w-3 h-3 bg-white border-2 border-primary rounded-full shadow-sm"></span>
+</div>
+</div>
+<div class="flex justify-between text-[10px] text-earth-mid dark:text-gray-400 font-medium">
+<span>Maturity</span>
+<span>98%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Space for scroll -->
+<div class="h-8"></div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-earth-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-800 pb-6 pt-3 px-6 shadow-[0_-5px_15px_rgba(0,0,0,0.02)]">
+<div class="flex justify-between items-center">
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons text-primary text-2xl group-hover:scale-110 transition-transform">dashboard</span>
+<span class="text-[10px] font-bold text-primary">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons text-gray-400 dark:text-gray-500 text-2xl group-hover:text-primary transition-colors">map</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Map</span>
+</button>
+<div class="relative -top-6">
+<button class="w-14 h-14 bg-earth-dark dark:bg-primary rounded-full shadow-lg shadow-primary/30 flex items-center justify-center group active:scale-95 transition-all hover:shadow-xl">
+<span class="material-icons text-white dark:text-earth-dark text-3xl">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons text-gray-400 dark:text-gray-500 text-2xl group-hover:text-primary transition-colors">inventory_2</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Stock</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons text-gray-400 dark:text-gray-500 text-2xl group-hover:text-primary transition-colors">settings</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Settings</span>
+</button>
+</div>
+</nav>
+</div>
+</body></html>

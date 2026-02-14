@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Crop Cycle Planner</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Google Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13ec37",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102213",
+              // Creating derived neutrals from the primary hue (approx 130deg)
+              "neutral-50": "#f4fcf5",
+              "neutral-100": "#eaf7ec",
+              "neutral-200": "#d5ebd9",
+              "neutral-300": "#b3d6ba",
+              "neutral-400": "#8bb594",
+              "neutral-500": "#669470",
+              "neutral-600": "#4d7355",
+              "neutral-700": "#39523e",
+              "neutral-800": "#2a3d2e",
+              "neutral-900": "#233326",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            boxShadow: {
+                'soft': '0 4px 20px -2px rgba(19, 236, 55, 0.15)',
+                'card': '0 2px 8px rgba(0,0,0,0.04)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Hide scrollbar for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Custom timeline line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 23px;
+            width: 2px;
+            background: #eaf7ec; /* neutral-100 */
+            z-index: 0;
+        }
+        .dark .timeline-line::before {
+            background: #2a3d2e; /* neutral-800 */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-neutral-800 dark:text-neutral-100 font-display antialiased min-h-screen flex justify-center">
+<!-- Mobile Container -->
+<div class="w-full max-w-md bg-white dark:bg-background-dark shadow-2xl min-h-screen relative flex flex-col overflow-hidden">
+<!-- Status Bar Area (Visual Only) -->
+<div class="h-12 w-full bg-white dark:bg-background-dark flex items-center justify-between px-6 pt-2 z-20">
+<span class="text-sm font-semibold">9:41</span>
+<div class="flex space-x-1.5">
+<div class="w-4 h-4 bg-neutral-800 dark:bg-white rounded-sm opacity-20"></div>
+<div class="w-4 h-4 bg-neutral-800 dark:bg-white rounded-sm opacity-20"></div>
+<div class="w-6 h-4 bg-neutral-800 dark:bg-white rounded-sm opacity-100"></div>
+</div>
+</div>
+<!-- Header Section -->
+<header class="px-6 pt-2 pb-6 bg-white dark:bg-background-dark sticky top-0 z-20 shadow-sm border-b border-neutral-100 dark:border-neutral-800">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h2 class="text-sm text-neutral-500 font-medium uppercase tracking-wider">My Farm</h2>
+<div class="flex items-center gap-1">
+<h1 class="text-2xl font-bold text-neutral-900 dark:text-white">October 2023</h1>
+<span class="material-icons-round text-neutral-400 text-xl cursor-pointer">expand_more</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center overflow-hidden border border-neutral-200 dark:border-neutral-700">
+<img alt="User Profile Picture" class="w-full h-full object-cover" data-alt="farmer smiling portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk4wl1QwR6U0Trv1hTG7QralNDkeZ7b6BxmOOu4N03SvWdezUz6Aim8ASl_-11KNwaod6UsiD7Nkx_gJSzrLWglADEnpIps7LW4CUR_aEGHGp23teU3sF2LDpaem0kAzfbq8ADqcsoGtCEhVOHTHyw2Vbw0SsrEQKR0wjA8KRK4ybMmXvxVF4Jo_nqrTis1prbFwnr0HBaX3HAjNxAiJAGA0RzllagDsME4e1o-8gd4JSGfcer9VNpmiDxAEqGcs7N-EEO573p67Vl"/>
+</div>
+</div>
+<!-- Horizontal Calendar Strip -->
+<div class="flex justify-between items-center">
+<!-- Day Item: Inactive -->
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<span class="text-xs text-neutral-400 font-medium">Mon</span>
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
+<span class="font-semibold">23</span>
+</div>
+</div>
+<!-- Day Item: Inactive -->
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<span class="text-xs text-neutral-400 font-medium">Tue</span>
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
+<span class="font-semibold">24</span>
+</div>
+</div>
+<!-- Day Item: Active -->
+<div class="flex flex-col items-center gap-2 cursor-pointer relative">
+<span class="text-xs text-primary font-bold">Wed</span>
+<div class="w-10 h-10 rounded-full bg-primary text-neutral-900 flex items-center justify-center shadow-soft transform scale-110 transition-transform">
+<span class="font-bold text-lg">25</span>
+</div>
+<!-- Indicator dot for tasks -->
+<div class="w-1 h-1 bg-primary rounded-full absolute -bottom-2"></div>
+</div>
+<!-- Day Item: Inactive -->
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<span class="text-xs text-neutral-400 font-medium">Thu</span>
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
+<span class="font-semibold">26</span>
+</div>
+</div>
+<!-- Day Item: Inactive -->
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<span class="text-xs text-neutral-400 font-medium">Fri</span>
+<div class="w-10 h-10 rounded-full flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
+<span class="font-semibold">27</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content: Task Timeline -->
+<main class="flex-1 overflow-y-auto px-6 py-6 bg-background-light dark:bg-background-dark timeline-line relative pb-24">
+<!-- Summary Card -->
+<div class="relative z-10 mb-8 ml-8">
+<div class="p-4 bg-neutral-900 dark:bg-neutral-800 rounded-xl shadow-lg text-white overflow-hidden relative group">
+<!-- Background Image for card with overlay -->
+<div class="absolute inset-0 opacity-20">
+<img class="w-full h-full object-cover" data-alt="Green field texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsdaTJQ4JfKkAeH8Fev4yMDIiXj9I3qz13dnj-1DWYqgdz4pKKVjnJtlcNgH1tz6MChUK-9jKC9_x6ojTIEggadQCmNWJB0OnJP3wlQ2iI6UNRagI2mCMPc-PFFeZ0E-OnUdub9jgL2OqoiACc0tPdEQJ78u8D0WAbWWkPAX96CQa9hBU6XbiKYBnkRBTgfdLDwX8sBx6UR76OQGSbKlR7HLG35fQzEEEhi2jimQjetDhYBd5OdCZOr2z1O7lxwB8VBzA6y-WgEN7B"/>
+</div>
+<div class="relative z-10 flex justify-between items-start">
+<div>
+<p class="text-xs text-neutral-300 font-medium uppercase mb-1">Daily Insight</p>
+<h3 class="text-lg font-bold mb-1">Optimal Conditions</h3>
+<p class="text-sm text-neutral-300 leading-snug">Humidity is at 65%. Perfect for fertilizer application on Corn fields today.</p>
+</div>
+<span class="material-icons-round text-primary text-3xl">wb_sunny</span>
+</div>
+</div>
+</div>
+<!-- Task Group: Morning -->
+<div class="relative z-10 mb-6 group">
+<div class="flex items-start gap-4">
+<div class="flex flex-col items-center gap-1 min-w-[48px] pt-1 bg-background-light dark:bg-background-dark z-10">
+<span class="text-xs font-bold text-neutral-500">08:00</span>
+<div class="w-3 h-3 rounded-full border-2 border-neutral-300 dark:border-neutral-600 bg-background-light dark:bg-background-dark group-hover:bg-primary group-hover:border-primary transition-colors"></div>
+</div>
+<div class="flex-1 bg-white dark:bg-neutral-800 rounded-xl p-4 shadow-card border-l-4 border-emerald-500">
+<div class="flex justify-between items-start mb-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                                Completed
+                            </span>
+<span class="text-neutral-400">
+<span class="material-icons-round text-base">more_horiz</span>
+</span>
+</div>
+<h4 class="text-base font-bold text-neutral-900 dark:text-white mb-1 line-through opacity-60">Wheat Field A - Sowing</h4>
+<div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 mt-2">
+<span class="flex items-center gap-1">
+<span class="material-icons-round text-sm">agriculture</span> Machinery A2
+                             </span>
+<span class="w-1 h-1 rounded-full bg-neutral-300"></span>
+<span>2 hrs</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Group: Now (Active) -->
+<div class="relative z-10 mb-6 group">
+<div class="flex items-start gap-4">
+<div class="flex flex-col items-center gap-1 min-w-[48px] pt-1 bg-background-light dark:bg-background-dark z-10">
+<span class="text-xs font-bold text-primary">11:30</span>
+<div class="w-3 h-3 rounded-full bg-primary shadow-[0_0_0_4px_rgba(19,236,55,0.2)] animate-pulse"></div>
+</div>
+<div class="flex-1 bg-white dark:bg-neutral-800 rounded-xl p-4 shadow-soft border-l-4 border-primary">
+<div class="flex justify-between items-start mb-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/20 text-green-800 dark:text-green-300">
+                                In Progress
+                            </span>
+<button class="text-primary hover:bg-primary/10 rounded-full p-1 transition-colors">
+<span class="material-icons-round text-base">check_circle_outline</span>
+</button>
+</div>
+<h4 class="text-base font-bold text-neutral-900 dark:text-white mb-1">Irrigation Check</h4>
+<p class="text-sm text-neutral-500 dark:text-neutral-400 mb-3">Inspect drip lines in Sector 4 for leaks.</p>
+<!-- Embedded Mini Map/Image -->
+<div class="h-24 w-full rounded-lg overflow-hidden relative mt-2 mb-2">
+<img alt="Map of farm sector 4" class="w-full h-full object-cover" data-alt="Satellite view of farm fields" data-location="Sector 4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV6baYvYasA1n4GMrGbojtOdbb5RKbzWGz-4etCv4SilzkjywyNNhPqtHKAu8Oc64Ws_te04QRacdusBTNqCb1KHQ8WOQWpf8z_driZPKKfD1qunRcl3SjxDW_GyGn7RjBpSQwN3sm-1NT02A0bQTsdgqJZfWe5iVZNaZHsoLQ_ZOQQxkJJCWwV_vy1G0rLoNeZ23L8PiyAX29FhybZHogvaTzF92y6-ghIHE1HFWYQwzxkSStOko9vNNHZ8RYRpUJsLKzNurvivXi"/>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded">Sector 4</div>
+</div>
+<div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+<span class="flex items-center gap-1">
+<span class="material-icons-round text-sm">water_drop</span> Water
+                             </span>
+<span class="w-1 h-1 rounded-full bg-neutral-300"></span>
+<span>Until 1:00 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Group: Afternoon -->
+<div class="relative z-10 mb-6 group">
+<div class="flex items-start gap-4">
+<div class="flex flex-col items-center gap-1 min-w-[48px] pt-1 bg-background-light dark:bg-background-dark z-10">
+<span class="text-xs font-bold text-neutral-500">14:00</span>
+<div class="w-3 h-3 rounded-full border-2 border-neutral-300 dark:border-neutral-600 bg-background-light dark:bg-background-dark group-hover:border-neutral-500 transition-colors"></div>
+</div>
+<div class="flex-1 bg-white dark:bg-neutral-800 rounded-xl p-4 shadow-card border-l-4 border-orange-400">
+<div class="flex justify-between items-start mb-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
+                                Pending
+                            </span>
+<span class="text-neutral-400">
+<span class="material-icons-round text-base">more_horiz</span>
+</span>
+</div>
+<h4 class="text-base font-bold text-neutral-900 dark:text-white mb-1">Apply NPK Fertilizer</h4>
+<p class="text-sm text-neutral-500 dark:text-neutral-400 mb-2">Corn Fields - Sector 2 &amp; 3</p>
+<div class="flex -space-x-2 overflow-hidden mb-3">
+<img alt="Worker" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-neutral-800 object-cover" data-alt="Worker profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEpsGH1EPzxHWTeVlm-1pZkYTSAShYzajtoy01A05kTd_9feZSdXBknbQREJDv5V-CMe7d6ZHwOxzDjyg_A_Pf70UFsr9RgN7FO_o3hKYZL--G82GFx9iP3B03aGkGd-NYHoksCJC1MygMRb4Cj_OY0VmudnLtpVq_3VeBugGIXt3cTaTn0I0h0qHGFdzajIwln0TvzzQeMM94MA6OO2yM03tlqr6mfkTKME3TtMPY0IzLAhIWBx8g1iMlAbiZFwOCmFv2uVvmwOsM"/>
+<img alt="Worker" class="inline-block h-6 w-6 rounded-full ring-2 ring-white dark:ring-neutral-800 object-cover" data-alt="Worker profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbcnNLaLYOzGiVp_ulJAoda2jUKYEmgk0r1NZv3iQMeqjssbTNFjHVKdEMEY-Tvb_1gnUxC43-6Hulikxo0L0WZ_5DX5wPPNE_2RacrgqbQ3ZXjN4fJxaRR4VbbXJEU1myds-XSKe-r6erWbJ2ZK6TX426Y2HRdTEquZU9T_lw2CXQ663T5Fio8IYR4S2lNkvjw2_GuxGcXETakAwR-HrIRWrvPr-KMHNU9kEpMWS8zZvhzNl9M9hsVhiqJGmGZdTePSQFxpNke9vP"/>
+</div>
+<div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+<span class="flex items-center gap-1">
+<span class="material-icons-round text-sm">science</span> Chemical
+                             </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Group: Future -->
+<div class="relative z-10 mb-6 group opacity-60">
+<div class="flex items-start gap-4">
+<div class="flex flex-col items-center gap-1 min-w-[48px] pt-1 bg-background-light dark:bg-background-dark z-10">
+<span class="text-xs font-bold text-neutral-400">16:30</span>
+<div class="w-3 h-3 rounded-full border-2 border-neutral-200 dark:border-neutral-700 bg-background-light dark:bg-background-dark"></div>
+</div>
+<div class="flex-1 bg-white dark:bg-neutral-800/50 rounded-xl p-4 border border-dashed border-neutral-300 dark:border-neutral-700">
+<h4 class="text-base font-medium text-neutral-600 dark:text-neutral-400 mb-1">Equipment Maintenance</h4>
+<p class="text-sm text-neutral-400">Clean sprayers post-fertilization</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="absolute bottom-24 right-6 w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-neutral-900 z-30 hover:scale-105 transition-transform active:scale-95">
+<span class="material-icons-round text-3xl">add</span>
+</button>
+<!-- Bottom Navigation -->
+<nav class="h-20 bg-white dark:bg-neutral-900 border-t border-neutral-100 dark:border-neutral-800 flex justify-around items-center px-2 pb-2 z-30">
+<a class="flex flex-col items-center justify-center w-16 h-full text-primary gap-1" href="#">
+<span class="material-icons-round">calendar_today</span>
+<span class="text-[10px] font-medium">Plan</span>
+</a>
+<a class="flex flex-col items-center justify-center w-16 h-full text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 gap-1 transition-colors" href="#">
+<span class="material-icons-round">inventory_2</span>
+<span class="text-[10px] font-medium">Inventory</span>
+</a>
+<a class="flex flex-col items-center justify-center w-16 h-full text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 gap-1 transition-colors" href="#">
+<span class="material-icons-round">grass</span>
+<span class="text-[10px] font-medium">Crops</span>
+</a>
+<a class="flex flex-col items-center justify-center w-16 h-full text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 gap-1 transition-colors" href="#">
+<span class="material-icons-round">bar_chart</span>
+<span class="text-[10px] font-medium">Reports</span>
+</a>
+</nav>
+<!-- iOS Home Indicator Overlay (Visual) -->
+<div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-neutral-900/20 dark:bg-white/20 rounded-full z-40"></div>
+</div>
+</body></html>

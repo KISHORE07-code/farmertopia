@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Field Management Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec37",
+                        "primary-dark": "#0fb82b",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102213",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a3320",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        /* Simulating the iOS safe area */
+        .safe-area-top {
+            padding-top: max(env(safe-area-inset-top), 44px);
+        }
+        .safe-area-bottom {
+            padding-bottom: max(env(safe-area-inset-bottom), 34px);
+        }
+        
+        /* Map placeholder pattern */
+        .map-pattern {
+            background-color: #e5e7eb;
+            background-image: 
+                radial-gradient(#d1d5db 1px, transparent 1px),
+                linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+                linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px, 100px 100px, 100px 100px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 antialiased overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/60 to-transparent pt-12 pb-6 px-4">
+<div class="flex items-center justify-between text-white">
+<button class="p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors">
+<span class="material-icons-round text-xl">arrow_back</span>
+</button>
+<h1 class="text-lg font-semibold tracking-wide shadow-sm">Field Overview</h1>
+<button class="p-2 rounded-full bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors relative">
+<span class="material-icons-round text-xl">tune</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border border-black/20"></span>
+</button>
+</div>
+</header>
+<!-- Map Section (Top ~45%) -->
+<section class="relative h-[45vh] w-full bg-gray-200 overflow-hidden">
+<!-- Map Background Image -->
+<div class="absolute inset-0 z-0">
+<img alt="Satellite view of green farm fields" class="w-full h-full object-cover filter brightness-[0.85] contrast-[1.1]" data-alt="Satellite view of green farm fields" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUg7KSWBY_r-vru_KqLd54LITVmAZMjwyb9PjaV-AF9fMSfhIcrROiX2kVURJIovQDX8m7Ln-dylxXziwceKpvMs1EHlYhWZqdptOkrf2bYjiVpBihontJLy8yN7VjSs5HNNis3x9LVnxW0sMLDB5_Xkj9TCi2k4B_N1iT_ve4qJAPQ-q0G4L430__K0465kDQXCLxt8xpWRMrSsCmzSQZnfzSGQYZc_dlSKq_3MqAzmTIt78ArA7z5GIo2d4W_0_dh2LrpdHGjM1x"/>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-6 right-4 z-10 flex flex-col gap-2">
+<button class="w-10 h-10 bg-white dark:bg-surface-dark rounded-full shadow-lg flex items-center justify-center text-gray-600 dark:text-gray-200 hover:text-primary transition-colors">
+<span class="material-icons-round text-xl">layers</span>
+</button>
+<button class="w-10 h-10 bg-white dark:bg-surface-dark rounded-full shadow-lg flex items-center justify-center text-gray-600 dark:text-gray-200 hover:text-primary transition-colors">
+<span class="material-icons-round text-xl">my_location</span>
+</button>
+</div>
+<!-- Field Overlay SVG (Simulated) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-0" preserveaspectratio="none" viewbox="0 0 400 300">
+<!-- Healthy Plot -->
+<path d="M50,100 L150,80 L180,180 L40,200 Z" fill="rgba(19, 236, 55, 0.3)" stroke="#13ec37" stroke-width="2"></path>
+<circle class="animate-pulse" cx="110" cy="140" fill="#13ec37" r="12"></circle>
+<text fill="black" font-size="10" font-weight="bold" text-anchor="middle" x="110" y="145">A1</text>
+<!-- Attention Plot -->
+<path d="M200,50 L350,60 L330,150 L210,140 Z" fill="rgba(250, 204, 21, 0.3)" stroke="#facc15" stroke-width="2"></path>
+<circle cx="270" cy="100" fill="#facc15" r="12"></circle>
+<text fill="black" font-size="10" font-weight="bold" text-anchor="middle" x="270" y="105">B4</text>
+<!-- Healthy Plot 2 -->
+<path d="M220,180 L360,170 L380,260 L240,280 Z" fill="rgba(19, 236, 55, 0.3)" stroke="#13ec37" stroke-width="2"></path>
+</svg>
+<!-- Legend -->
+<div class="absolute top-28 left-4 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-sm p-2 rounded-lg shadow-sm z-10 border border-gray-100 dark:border-gray-700">
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="text-xs font-medium text-gray-700 dark:text-gray-200">Healthy</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+<span class="text-xs font-medium text-gray-700 dark:text-gray-200">Needs Check</span>
+</div>
+</div>
+</section>
+<!-- Scrollable List Sheet (Bottom ~55%) -->
+<section class="flex-1 bg-background-light dark:bg-background-dark -mt-4 rounded-t-3xl z-10 flex flex-col shadow-[0_-4px_20px_rgba(0,0,0,0.1)] overflow-hidden">
+<!-- Drag Handle & Header -->
+<div class="pt-3 pb-2 px-6 bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-gray-800 sticky top-0 z-20">
+<div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-4"></div>
+<div class="flex justify-between items-end mb-2">
+<div>
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">My Fields</h2>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">12 active plots</p>
+</div>
+<div class="flex items-center gap-1 text-primary text-sm font-medium bg-primary/10 px-3 py-1.5 rounded-full">
+<span>Sort by Status</span>
+<span class="material-icons-round text-base">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-4 space-y-4 pb-24 bg-background-light dark:bg-background-dark">
+<!-- Card 1: Needs Attention -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-yellow-400 hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-yellow-400/10 flex items-center justify-center text-yellow-600 dark:text-yellow-400">
+<span class="material-icons-round">agriculture</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white">North Plot B4</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400">Soybeans • 45 Acres</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-md bg-yellow-400/20 text-yellow-700 dark:text-yellow-300 text-xs font-bold uppercase tracking-wider">Check</span>
+</div>
+<div class="grid grid-cols-2 gap-2 mb-4">
+<div class="bg-background-light dark:bg-black/20 p-2 rounded-lg">
+<span class="block text-[10px] uppercase text-gray-400 font-semibold mb-0.5">Growth Stage</span>
+<span class="text-sm font-medium text-gray-800 dark:text-gray-200">Vegetative (V3)</span>
+</div>
+<div class="bg-background-light dark:bg-black/20 p-2 rounded-lg">
+<span class="block text-[10px] uppercase text-gray-400 font-semibold mb-0.5">Moisture</span>
+<span class="text-sm font-medium text-yellow-600 dark:text-yellow-400 flex items-center gap-1">
+<span class="material-icons-round text-xs">water_drop</span> Low (12%)
+                        </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+<span class="text-xs text-gray-400">Last scouted: Yesterday</span>
+<button class="text-primary hover:text-primary-dark font-medium text-sm flex items-center gap-1">
+                        Details <span class="material-icons-round text-base">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Healthy -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-primary hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary-dark dark:text-primary">
+<span class="material-icons-round">grass</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white">South Field A1</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400">Corn • 120 Acres</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-md bg-primary/20 text-green-700 dark:text-green-300 text-xs font-bold uppercase tracking-wider">Healthy</span>
+</div>
+<div class="grid grid-cols-2 gap-2 mb-4">
+<div class="bg-background-light dark:bg-black/20 p-2 rounded-lg">
+<span class="block text-[10px] uppercase text-gray-400 font-semibold mb-0.5">Growth Stage</span>
+<span class="text-sm font-medium text-gray-800 dark:text-gray-200">Flowering (R1)</span>
+</div>
+<div class="bg-background-light dark:bg-black/20 p-2 rounded-lg">
+<span class="block text-[10px] uppercase text-gray-400 font-semibold mb-0.5">Irrigation</span>
+<span class="text-sm font-medium text-blue-500 dark:text-blue-400 flex items-center gap-1">
+<span class="material-icons-round text-xs">schedule</span> 2 days ago
+                        </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+<span class="text-xs text-gray-400">Last scouted: Today, 9 AM</span>
+<button class="text-primary hover:text-primary-dark font-medium text-sm flex items-center gap-1">
+                        Details <span class="material-icons-round text-base">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Healthy -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-primary hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary-dark dark:text-primary">
+<span class="material-icons-round">grass</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white">East Ridge C2</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400">Wheat • 85 Acres</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded-md bg-primary/20 text-green-700 dark:text-green-300 text-xs font-bold uppercase tracking-wider">Healthy</span>
+</div>
+<div class="grid grid-cols-2 gap-2 mb-4">
+<div class="bg-background-light dark:bg-black/20 p-2 rounded-lg">
+<span class="block text-[10px] uppercase text-gray-400 font-semibold mb-0.5">Growth Stage</span>
+<span class="text-sm font-medium text-gray-800 dark:text-gray-200">Booting</span>
+</div>
+<div class="bg-background-light dark:bg-black/20 p-2 rounded-lg">
+<span class="block text-[10px] uppercase text-gray-400 font-semibold mb-0.5">Irrigation</span>
+<span class="text-sm font-medium text-blue-500 dark:text-blue-400 flex items-center gap-1">
+<span class="material-icons-round text-xs">schedule</span> Scheduled Tmrw
+                        </span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+<span class="text-xs text-gray-400">Last scouted: 3 days ago</span>
+<button class="text-primary hover:text-primary-dark font-medium text-sm flex items-center gap-1">
+                        Details <span class="material-icons-round text-base">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Card 4: Healthy (Simple version for scrolling) -->
+<div class="bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border-l-4 border-primary opacity-60">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-gray-100 dark:bg-white/5"></div>
+<div class="flex-1 space-y-2">
+<div class="h-4 bg-gray-100 dark:bg-white/5 rounded w-3/4"></div>
+<div class="h-3 bg-gray-100 dark:bg-white/5 rounded w-1/2"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Tab Bar -->
+<nav class="absolute bottom-0 left-0 right-0 bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 safe-area-bottom z-30">
+<div class="flex justify-around items-center pt-3 pb-1">
+<button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors">
+<span class="material-icons-round text-2xl">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-icons-round text-2xl">map</span>
+<span class="text-[10px] font-medium">Fields</span>
+</button>
+<!-- FAB-like center button -->
+<button class="bg-primary hover:bg-primary-dark text-white rounded-full p-3 -mt-8 shadow-lg shadow-primary/40 border-4 border-background-light dark:border-background-dark transform transition hover:scale-105">
+<span class="material-icons-round text-2xl">add</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors">
+<span class="material-icons-round text-2xl">assignment</span>
+<span class="text-[10px] font-medium">Tasks</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-gray-400 hover:text-primary transition-colors">
+<span class="material-icons-round text-2xl">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</div>
+</nav>
+</body></html>
